@@ -11,8 +11,8 @@ async function run(): Promise<void> {
 		core.debug(new Date().toTimeString());
 		await wait(parseInt(ms, 10));
 		core.debug(new Date().toTimeString());
-		core.info(`NOW it is: ${NOW.toTimeString()}`);
-		core.info(`Then it was: ${THEN.toTimeString()}`);
+		core.info(`NOW it is: ${NOW.toISOString()}`);
+		core.info(`Then it was: ${THEN.toISOString()}`);
 
 		core.setOutput('time', new Date().toTimeString());
 	} catch (error) {
