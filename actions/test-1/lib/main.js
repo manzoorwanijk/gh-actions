@@ -39,8 +39,8 @@ function run() {
             core.debug(new Date().toTimeString());
             yield wait_1.wait(parseInt(ms, 10));
             core.debug(new Date().toTimeString());
-            core.debug(`NOW it is: ${utils_1.NOW.toTimeString()}`);
-            core.debug(`Then it was: ${utils_1.THEN.toTimeString()}`);
+            core.info(`NOW it is: ${utils_1.NOW.toTimeString()}`);
+            core.info(`Then it was: ${utils_1.THEN.toTimeString()}`);
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {

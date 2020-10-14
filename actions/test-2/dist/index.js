@@ -345,6 +345,7 @@ function run() {
             core.debug(new Date().toTimeString());
             yield wait_1.wait(parseInt(ms, 10));
             core.debug(new Date().toTimeString());
+            core.info('nothing here');
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {
