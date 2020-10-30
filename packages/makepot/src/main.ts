@@ -21,7 +21,7 @@ async function run(): Promise<void> {
 			throw new Error(error);
 		}
 		// make the file executable
-		await io.chmod(wpcliPath, '0o765'); // equal to '+x'
+		await io.chmod(wpcliPath, '0o765');
 		// move to path
 		await io.mv(wpcliPath, '/usr/local/bin/wp');
 		core.endGroup();
