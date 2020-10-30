@@ -27,13 +27,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(require("@actions/core"));
 const io = __importStar(require("@eventespresso-actions/io"));
-const exec_1 = __importDefault(require("@actions/exec"));
+const exec_1 = require("@actions/exec");
 const utils_1 = require("@eventespresso-actions/utils");
 const utils_2 = require("./utils");
 function run() {
@@ -52,7 +49,7 @@ function run() {
             yield io.chmod(wpcliPath, 0o765);
             // move to path
             // await io.mv(wpcliPath, '/usr/local/bin/wp');
-            yield exec_1.default.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
+            yield exec_1.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
             core.endGroup();
             //#endregion
             //#region Output config
@@ -71,7 +68,7 @@ function run() {
             core.endGroup();
             //#region POT file generation
             core.startGroup('Generating POT File');
-            yield exec_1.default.exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
+            yield exec_1.exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
             const pot = io.readFileSync(potPath, { encoding: 'utf8' });
             core.info(pot);
             core.endGroup();

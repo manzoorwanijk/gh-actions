@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as io from '@eventespresso-actions/io';
-import exec from '@actions/exec';
+import { exec } from '@actions/exec';
 import { downloadUrl } from '@eventespresso-actions/utils';
 
 import { getInput } from './utils';
@@ -24,7 +24,7 @@ async function run(): Promise<void> {
 		await io.chmod(wpcliPath, 0o765);
 		// move to path
 		// await io.mv(wpcliPath, '/usr/local/bin/wp');
-		await exec.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
+		await exec('mv', [wpcliPath, '/usr/local/bin/wp']);
 		core.endGroup();
 		//#endregion
 
@@ -45,7 +45,7 @@ async function run(): Promise<void> {
 
 		//#region POT file generation
 		core.startGroup('Generating POT File');
-		await exec.exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
+		await exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
 		const pot = io.readFileSync(potPath, { encoding: 'utf8' });
 		core.info(pot);
 		core.endGroup();

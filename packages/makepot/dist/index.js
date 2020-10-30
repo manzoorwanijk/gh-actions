@@ -1577,13 +1577,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(117));
 const io = __importStar(__webpack_require__(666));
-const exec_1 = __importDefault(__webpack_require__(473));
+const exec_1 = __webpack_require__(473);
 const utils_1 = __webpack_require__(927);
 const utils_2 = __webpack_require__(560);
 function run() {
@@ -1602,7 +1599,7 @@ function run() {
             yield io.chmod(wpcliPath, 0o765);
             // move to path
             // await io.mv(wpcliPath, '/usr/local/bin/wp');
-            yield exec_1.default.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
+            yield exec_1.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
             core.endGroup();
             //#endregion
             //#region Output config
@@ -1621,7 +1618,7 @@ function run() {
             core.endGroup();
             //#region POT file generation
             core.startGroup('Generating POT File');
-            yield exec_1.default.exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
+            yield exec_1.exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
             const pot = io.readFileSync(potPath, { encoding: 'utf8' });
             core.info(pot);
             core.endGroup();
