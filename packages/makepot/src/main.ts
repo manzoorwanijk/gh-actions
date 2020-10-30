@@ -24,7 +24,7 @@ async function run(): Promise<void> {
 		await io.chmod(wpcliPath, 0o765);
 		// move to path
 		// await io.mv(wpcliPath, '/usr/local/bin/wp');
-		await exec('mv', [wpcliPath, '/usr/local/bin/wp']);
+		await exec('sudo mv', [wpcliPath, '/usr/local/bin/wp']);
 		core.endGroup();
 		//#endregion
 
