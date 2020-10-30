@@ -35,7 +35,7 @@ const utils_1 = require("@eventespresso-actions/utils");
 const utils_2 = require("./utils");
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const { savePath, slug, textDomain, packageName, include, exclude, headers } = utils_2.getInput();
+        const { exclude, headers, ignoreDomain, include, packageName, savePath, slug, textDomain } = utils_2.getInput();
         try {
             //#region WP CLI setup
             core.startGroup('Setup WP-CLI');
@@ -57,11 +57,12 @@ function run() {
             const potPath = `"${savePath}/${textDomain}.pot"`;
             const args = [
                 `--slug="${slug}"`,
-                packageName && `--package-name="${packageName}"`,
-                headers && `--headers="${headers}"`,
-                textDomain && `--domain="${textDomain}"`,
-                include && `--include="${include}"`,
                 exclude && `--exclude="${exclude}"`,
+                headers && `--headers="${headers}"`,
+                ignoreDomain && '--ignore-domain',
+                include && `--include="${include}"`,
+                packageName && `--package-name="${packageName}"`,
+                textDomain && `--domain="${textDomain}"`,
             ].filter(Boolean);
             core.info(`POT path: ${potPath}`);
             core.info(args.join(`\n`));

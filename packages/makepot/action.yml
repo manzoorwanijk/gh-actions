@@ -12,6 +12,8 @@ inputs:
         description: 'Plugin/Theme text-domain (Default: slug)'
     package-name:
         description: 'Plugin/Theme name to use in Project-Id-Version header'
+    ignore-domain:
+        description: 'Ignore the text domain completely and extract strings with any text domain.'
     include:
         description: 'Comma-separated list of files and paths that should be used for string extraction.'
     exclude:

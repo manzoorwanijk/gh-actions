@@ -1585,7 +1585,7 @@ const utils_1 = __webpack_require__(927);
 const utils_2 = __webpack_require__(560);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const { savePath, slug, textDomain, packageName, include, exclude, headers } = utils_2.getInput();
+        const { exclude, headers, ignoreDomain, include, packageName, savePath, slug, textDomain } = utils_2.getInput();
         try {
             //#region WP CLI setup
             core.startGroup('Setup WP-CLI');
@@ -1607,11 +1607,12 @@ function run() {
             const potPath = `"${savePath}/${textDomain}.pot"`;
             const args = [
                 `--slug="${slug}"`,
-                packageName && `--package-name="${packageName}"`,
-                headers && `--headers="${headers}"`,
-                textDomain && `--domain="${textDomain}"`,
-                include && `--include="${include}"`,
                 exclude && `--exclude="${exclude}"`,
+                headers && `--headers="${headers}"`,
+                ignoreDomain && '--ignore-domain',
+                include && `--include="${include}"`,
+                packageName && `--package-name="${packageName}"`,
+                textDomain && `--domain="${textDomain}"`,
             ].filter(Boolean);
             core.info(`POT path: ${potPath}`);
             core.info(args.join(`\n`));
@@ -1660,20 +1661,30 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getInput = void 0;
 const core = __importStar(__webpack_require__(117));
 function getInput() {
+    const exclude = core.getInput('exclude');
+    const headers = core.getInput('headers');
+    const include = core.getInput('include');
+    const ignoreDomain = Boolean(core.getInput('ignore-domain'));
+    const packageName = core.getInput('package-name');
     const savePath = core.getInput('save-path');
     const slug = core.getInput('slug');
     const textDomain = core.getInput('text-domain') || slug;
-    const packageName = core.getInput('package-name');
-    const include = core.getInput('include');
-    const exclude = core.getInput('exclude');
-    const headers = core.getInput('headers');
     if (!savePath) {
         throw new Error('`save-path` input not proved');
     }
     if (!slug) {
         throw new Error('`slug` input not proved');
     }
-    return { savePath, slug, textDomain, packageName, include, exclude, headers };
+    return {
+        exclude,
+        headers,
+        ignoreDomain,
+        include,
+        packageName,
+        savePath,
+        slug,
+        textDomain,
+    };
 }
 exports.getInput = getInput;
 

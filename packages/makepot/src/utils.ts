@@ -1,23 +1,25 @@
 import * as core from '@actions/core';
 
 export interface Input {
+	exclude?: string;
+	headers?: string;
+	include?: string;
+	ignoreDomain?: boolean;
+	packageName?: string;
 	savePath: string;
 	slug: string;
 	textDomain?: string;
-	packageName?: string;
-	include?: string;
-	exclude?: string;
-	headers?: string;
 }
 
 export function getInput(): Input {
+	const exclude = core.getInput('exclude');
+	const headers = core.getInput('headers');
+	const include = core.getInput('include');
+	const ignoreDomain = Boolean(core.getInput('ignore-domain'));
+	const packageName = core.getInput('package-name');
 	const savePath = core.getInput('save-path');
 	const slug = core.getInput('slug');
 	const textDomain = core.getInput('text-domain') || slug;
-	const packageName = core.getInput('package-name');
-	const include = core.getInput('include');
-	const exclude = core.getInput('exclude');
-	const headers = core.getInput('headers');
 
 	if (!savePath) {
 		throw new Error('`save-path` input not proved');
@@ -26,5 +28,14 @@ export function getInput(): Input {
 		throw new Error('`slug` input not proved');
 	}
 
-	return { savePath, slug, textDomain, packageName, include, exclude, headers };
+	return {
+		exclude,
+		headers,
+		ignoreDomain,
+		include,
+		packageName,
+		savePath,
+		slug,
+		textDomain,
+	};
 }

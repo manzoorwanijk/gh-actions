@@ -22,19 +22,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getInput = void 0;
 const core = __importStar(require("@actions/core"));
 function getInput() {
+    const exclude = core.getInput('exclude');
+    const headers = core.getInput('headers');
+    const include = core.getInput('include');
+    const ignoreDomain = Boolean(core.getInput('ignore-domain'));
+    const packageName = core.getInput('package-name');
     const savePath = core.getInput('save-path');
     const slug = core.getInput('slug');
     const textDomain = core.getInput('text-domain') || slug;
-    const packageName = core.getInput('package-name');
-    const include = core.getInput('include');
-    const exclude = core.getInput('exclude');
-    const headers = core.getInput('headers');
     if (!savePath) {
         throw new Error('`save-path` input not proved');
     }
     if (!slug) {
         throw new Error('`slug` input not proved');
     }
-    return { savePath, slug, textDomain, packageName, include, exclude, headers };
+    return {
+        exclude,
+        headers,
+        ignoreDomain,
+        include,
+        packageName,
+        savePath,
+        slug,
+        textDomain,
+    };
 }
 exports.getInput = getInput;

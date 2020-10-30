@@ -6,7 +6,7 @@ import { downloadUrl } from '@eventespresso-actions/utils';
 import { getInput } from './utils';
 
 async function run(): Promise<void> {
-	const { savePath, slug, textDomain, packageName, include, exclude, headers } = getInput();
+	const { exclude, headers, ignoreDomain, include, packageName, savePath, slug, textDomain } = getInput();
 
 	try {
 		//#region WP CLI setup
@@ -23,7 +23,6 @@ async function run(): Promise<void> {
 		// make the file executable
 		await io.chmod(wpcliPath, 0o765);
 		// move to path
-		// await io.mv(wpcliPath, '/usr/local/bin/wp');
 		await exec('sudo mv', [wpcliPath, '/usr/local/bin/wp']);
 		core.endGroup();
 		//#endregion
@@ -33,11 +32,12 @@ async function run(): Promise<void> {
 		const potPath = `"${savePath}/${textDomain}.pot"`;
 		const args = [
 			`--slug="${slug}"`,
-			packageName && `--package-name="${packageName}"`,
-			headers && `--headers="${headers}"`,
-			textDomain && `--domain="${textDomain}"`,
-			include && `--include="${include}"`,
 			exclude && `--exclude="${exclude}"`,
+			headers && `--headers="${headers}"`,
+			ignoreDomain && '--ignore-domain',
+			include && `--include="${include}"`,
+			packageName && `--package-name="${packageName}"`,
+			textDomain && `--domain="${textDomain}"`,
 		].filter(Boolean);
 
 		core.info(`POT path: ${potPath}`);
