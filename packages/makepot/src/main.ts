@@ -23,7 +23,8 @@ async function run(): Promise<void> {
 		// make the file executable
 		await io.chmod(wpcliPath, 0o765);
 		// move to path
-		await io.mv(wpcliPath, '/usr/local/bin/wp');
+		// await io.mv(wpcliPath, '/usr/local/bin/wp');
+		await exec.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
 		core.endGroup();
 		//#endregion
 

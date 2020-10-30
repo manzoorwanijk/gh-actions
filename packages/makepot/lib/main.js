@@ -51,7 +51,8 @@ function run() {
             // make the file executable
             yield io.chmod(wpcliPath, 0o765);
             // move to path
-            yield io.mv(wpcliPath, '/usr/local/bin/wp');
+            // await io.mv(wpcliPath, '/usr/local/bin/wp');
+            yield exec_1.default.exec('mv', [wpcliPath, '/usr/local/bin/wp']);
             core.endGroup();
             //#endregion
             //#region Output config
