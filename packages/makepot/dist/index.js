@@ -1599,7 +1599,7 @@ function run() {
                 throw new Error(error);
             }
             // make the file executable
-            yield io.chmod(wpcliPath, '+x');
+            yield io.chmod(wpcliPath, '0o765'); // equal to '+x'
             // move to path
             yield io.mv(wpcliPath, '/usr/local/bin/wp');
             core.endGroup();
