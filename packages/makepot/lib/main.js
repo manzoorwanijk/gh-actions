@@ -57,12 +57,12 @@ function run() {
             const potPath = `"${savePath}/${textDomain}.pot"`;
             const args = [
                 `--slug="${slug}"`,
-                `--package-name="${packageName}"`,
-                `--headers="${headers}"`,
-                `--domain="${textDomain}"`,
-                `--include="${include}"`,
-                `--exclude="${exclude}"`,
-            ];
+                packageName && `--package-name="${packageName}"`,
+                headers && `--headers="${headers}"`,
+                textDomain && `--domain="${textDomain}"`,
+                include && `--include="${include}"`,
+                exclude && `--exclude="${exclude}"`,
+            ].filter(Boolean);
             core.info(`POT path: ${potPath}`);
             core.info(args.join(`\n`));
             core.endGroup();
