@@ -3,6 +3,7 @@ import * as core from '@actions/core';
 export interface Input {
 	exclude?: string;
 	headers?: string;
+	headersJsonFile?: string;
 	include?: string;
 	ignoreDomain?: boolean;
 	packageName?: string;
@@ -20,6 +21,7 @@ export function getInput(): Input {
 	const savePath = core.getInput('save-path');
 	const slug = core.getInput('slug');
 	const textDomain = core.getInput('text-domain') || slug;
+	const headersJsonFile = core.getInput('headers-json-file');
 
 	if (!savePath) {
 		throw new Error('`save-path` input not proved');
@@ -31,6 +33,7 @@ export function getInput(): Input {
 	return {
 		exclude,
 		headers,
+		headersJsonFile,
 		ignoreDomain,
 		include,
 		packageName,

@@ -1585,7 +1585,7 @@ const utils_1 = __webpack_require__(927);
 const utils_2 = __webpack_require__(560);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const { exclude, headers, ignoreDomain, include, packageName, savePath, slug, textDomain } = utils_2.getInput();
+        const { exclude, headers, headersJsonFile, ignoreDomain, include, packageName, savePath, slug, textDomain, } = utils_2.getInput();
         try {
             //#region WP CLI setup
             core.startGroup('Setup WP-CLI');
@@ -1602,20 +1602,26 @@ function run() {
             core.endGroup();
             //#endregion
             //#region Configuration
-            core.startGroup('Configuration');
-            const potPath = `"${savePath}/${textDomain}.pot"`;
+            const potPath = `${savePath}/${textDomain}.pot`;
+            let potHeaders;
+            if (headersJsonFile && io.existsSync(headersJsonFile)) {
+                // JSON file may have spaces and new lines
+                // we will parse it and stringify again to get rid of spaces and line breaks
+                const headersObj = JSON.parse(io.readFileSync(headersJsonFile, { encoding: 'utf8' }));
+                potHeaders = JSON.stringify(headersObj);
+            }
+            else {
+                potHeaders = headers;
+            }
             const args = [
-                `--slug="${slug}"`,
+                `--slug=${slug}`,
                 exclude && `--exclude=${exclude}`,
-                headers && `--headers=${headers}`,
+                potHeaders && `--headers=${potHeaders}`,
                 ignoreDomain && '--ignore-domain',
                 include && `--include=${include}`,
-                packageName && `--package-name=${packageName}`,
+                packageName && `--package-name="${packageName}"`,
                 textDomain && `--domain=${textDomain}`,
             ].filter(Boolean);
-            core.info(`POT path: ${potPath}`);
-            core.info(args.join(`\n`));
-            core.endGroup();
             //#endregion
             //#region POT file generation
             core.startGroup('Generating POT File');
@@ -1670,6 +1676,7 @@ function getInput() {
     const savePath = core.getInput('save-path');
     const slug = core.getInput('slug');
     const textDomain = core.getInput('text-domain') || slug;
+    const headersJsonFile = core.getInput('headers-json-file');
     if (!savePath) {
         throw new Error('`save-path` input not proved');
     }
@@ -1679,6 +1686,7 @@ function getInput() {
     return {
         exclude,
         headers,
+        headersJsonFile,
         ignoreDomain,
         include,
         packageName,
@@ -1720,11 +1728,11 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.readdirSync = exports.readFileSync = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rename = exports.readFile = exports.readdir = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+exports.existsSync = exports.readdirSync = exports.readFileSync = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rename = exports.readFile = exports.readdir = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
 const fs = __importStar(__webpack_require__(747));
 __exportStar(__webpack_require__(890), exports);
 _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.readdir = _a.readdir, exports.readFile = _a.readFile, exports.rename = _a.rename, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
-exports.readFileSync = fs.readFileSync, exports.readdirSync = fs.readdirSync;
+exports.readFileSync = fs.readFileSync, exports.readdirSync = fs.readdirSync, exports.existsSync = fs.existsSync;
 
 
 /***/ }),

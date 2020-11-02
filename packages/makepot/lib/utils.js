@@ -30,6 +30,7 @@ function getInput() {
     const savePath = core.getInput('save-path');
     const slug = core.getInput('slug');
     const textDomain = core.getInput('text-domain') || slug;
+    const headersJsonFile = core.getInput('headers-json-file');
     if (!savePath) {
         throw new Error('`save-path` input not proved');
     }
@@ -39,6 +40,7 @@ function getInput() {
     return {
         exclude,
         headers,
+        headersJsonFile,
         ignoreDomain,
         include,
         packageName,

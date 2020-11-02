@@ -6,7 +6,17 @@ import { downloadUrl } from '@eventespresso-actions/utils';
 import { getInput } from './utils';
 
 async function run(): Promise<void> {
-	const { exclude, headers, ignoreDomain, include, packageName, savePath, slug, textDomain } = getInput();
+	const {
+		exclude,
+		headers,
+		headersJsonFile,
+		ignoreDomain,
+		include,
+		packageName,
+		savePath,
+		slug,
+		textDomain,
+	} = getInput();
 
 	try {
 		//#region WP CLI setup
@@ -28,21 +38,26 @@ async function run(): Promise<void> {
 		//#endregion
 
 		//#region Configuration
-		core.startGroup('Configuration');
-		const potPath = `"${savePath}/${textDomain}.pot"`;
+		const potPath = `${savePath}/${textDomain}.pot`;
+		let potHeaders: string;
+
+		if (headersJsonFile && io.existsSync(headersJsonFile)) {
+			// JSON file may have spaces and new lines
+			// we will parse it and stringify again to get rid of spaces and line breaks
+			const headersObj = JSON.parse(io.readFileSync(headersJsonFile, { encoding: 'utf8' }));
+			potHeaders = JSON.stringify(headersObj);
+		} else {
+			potHeaders = headers;
+		}
 		const args = [
-			`--slug="${slug}"`,
+			`--slug=${slug}`,
 			exclude && `--exclude=${exclude}`,
-			headers && `--headers=${headers}`,
+			potHeaders && `--headers=${potHeaders}`,
 			ignoreDomain && '--ignore-domain',
 			include && `--include=${include}`,
-			packageName && `--package-name=${packageName}`,
+			packageName && `--package-name="${packageName}"`,
 			textDomain && `--domain=${textDomain}`,
 		].filter(Boolean);
-
-		core.info(`POT path: ${potPath}`);
-		core.info(args.join(`\n`));
-		core.endGroup();
 		//#endregion
 
 		//#region POT file generation
