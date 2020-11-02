@@ -27,29 +27,31 @@ async function run(): Promise<void> {
 		core.endGroup();
 		//#endregion
 
-		//#region Output config
+		//#region Configuration
 		core.startGroup('Configuration');
 		const potPath = `"${savePath}/${textDomain}.pot"`;
 		const args = [
 			`--slug="${slug}"`,
-			exclude && `--exclude="${exclude}"`,
-			headers && `--headers="${headers}"`,
+			exclude && `--exclude=${exclude}`,
+			headers && `--headers=${headers}`,
 			ignoreDomain && '--ignore-domain',
-			include && `--include="${include}"`,
-			packageName && `--package-name="${packageName}"`,
-			textDomain && `--domain="${textDomain}"`,
+			include && `--include=${include}`,
+			packageName && `--package-name=${packageName}`,
+			textDomain && `--domain=${textDomain}`,
 		].filter(Boolean);
 
 		core.info(`POT path: ${potPath}`);
 		core.info(args.join(`\n`));
 		core.endGroup();
+		//#endregion
 
 		//#region POT file generation
 		core.startGroup('Generating POT File');
-		await exec('wp', ['i18n', 'make-pot', '.', potPath, ...args, `--allow-root`]);
+		await exec('wp i18n make-pot .', [potPath, ...args, `--allow-root`]);
 		const pot = io.readFileSync(potPath, { encoding: 'utf8' });
 		core.info(pot);
 		core.endGroup();
+		//#endregion
 	} catch (error) {
 		core.setFailed(error.message);
 	}
